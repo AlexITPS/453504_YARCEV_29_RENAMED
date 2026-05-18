@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Добро пожаловать в нашу мастерскую!</h1>
+    
+    <h3>Последняя новость:</h3>
+    {% if last_news %}
+        <article style="border-bottom: 1px solid #eee; padding-bottom: 10px;">
+            <h4>{{ last_news.title }}</h4>
+            {% if last_news.image %}<img src="{{ last_news.image.url }}" style="max-width: 200px;">{% endif %}
+            <p>{{ last_news.content|truncatewords:20 }}</p>
+        </article>
+    {% else %}
+        <p>Пока новостей нет.</p>
+    {% endif %}
+    
+    <h2>Наши основные услуги:</h2>
+    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+        {% for service in featured_services %}
+            <div style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; width: 200px;">
+                <h4>{{ service.name }}</h4>
+                <p>Цена: <strong>{{ service.price }} руб.</strong></p>
+                <a href="{% url 'service_detail' service.id %}">Подробнее</a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div style="margin-top: 30px;">
+        <h2 style="font-weight: bold;">Календарь на {{ footer_local_time|date:"F Y" }}</h2>
+        
+        <pre style="font-family: monospace; font-size: 1.2em; border: none; background: none; padding: 0; line-height: 1.5; color: #333;">
+    {{ main_calendar }}
+        </pre>
+    </div>
+{% endblock %}

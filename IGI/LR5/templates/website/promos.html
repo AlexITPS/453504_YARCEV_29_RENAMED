@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Действующие промокоды и акции</h1>
+<div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px;">
+    {% for promo in promos %}
+        <div style="background: #fff3cd; border: 2px dashed #ffc107; padding: 20px; border-radius: 10px; width: 250px; text-align: center;">
+            <h2 style="margin: 0; color: #856404;">{{ promo.code }}</h2>
+            <p style="font-size: 1.2em; font-weight: bold;">Скидка: {{ promo.discount_percent }}%</p>
+            <p style="font-size: 0.9em; color: #666;">Действует до: {{ promo.valid_until|date:"d.m.Y" }}</p>
+        </div>
+    {% empty %}
+        <p>На данный момент активных промокодов нет.</p>
+    {% endfor %}
+</div>
+{% endblock %}

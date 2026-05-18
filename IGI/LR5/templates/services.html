@@ -1,0 +1,66 @@
+{% extends "base.html" %} 
+{% block content %}
+<div style="margin: 20px;">
+    <h2>Наши услуги по ремонту</h2>
+
+    <form method="get" style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+        <input type="text" name="q" placeholder="Поиск услуги..." value="{{ request.GET.q }}">
+        
+        <select name="category">
+            <option value="">Все категории</option>
+            {% for cat in categories %}
+                <option value="{{ cat.id }}" {% if request.GET.category == cat.id|stringformat:"i" %}selected{% endif %}>
+                    {{ cat.name }}
+                </option>
+            {% endfor %}
+        </select>
+
+    <select name="sort" class="form-control">
+        <option value="">Сортировка</option>
+        <option value="cheap" {% if request.GET.sort == 'cheap' %}selected{% endif %}>Дешевле</option>
+        <option value="expensive" {% if request.GET.sort == 'expensive' %}selected{% endif %}>Дороже</option>
+        <option value="name_asc" {% if request.GET.sort == 'name_asc' %}selected{% endif %}>От А до Я</option>
+        <option value="name_desc" {% if request.GET.sort == 'name_desc' %}selected{% endif %}>От Я до А</option>
+    </select>
+    
+        <button type="submit">Применить</button>
+        <a href="{% url 'service_list' %}">Сбросить</a>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Категория</th>
+                <th>Цена</th>
+                <th>Действие</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for service in services %}
+            <tr>
+                <td><a href="{% url 'service_detail' service.id %}">{{ service.name }}</a></td>
+                <td>{{ service.category.name }}</td>
+                <td>{{ service.price }} руб.</td>
+                <td>
+                    {% if user.is_authenticated %}
+                        {% if user.is_client and not user.is_superuser and not user.is_master %}
+                            <a href="{% url 'create_order' service.id %}" 
+                            style="background: #28a745; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 0.9em; display: inline-block;">
+                                Заказать
+                            </a>
+                        {% else %}
+                            <span style="color: #666; font-size: 0.8em;">Только для клиентов</span>
+                        {% endif %}
+                    {% else %}
+                        <small><a href="{% url 'login' %}">Войдите</a>, чтобы заказать</small>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">Услуг не найдено.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

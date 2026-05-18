@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Вакансии в "Ремонт 24/7"</h1>
+<div style="margin-top: 20px;">
+    {% for v in vacancies %}
+        <div style="background: #f8f9fa; border: 1px solid #dee2e6; padding: 25px; border-radius: 8px; margin-bottom: 20px;">
+            <h3 style="color: #007bff; margin-top: 0;">{{ v.title }}</h3>
+            <div style="line-height: 1.6; color: #333; white-space: pre-line;">
+                {{ v.description }}
+            </div>
+        </div>
+    {% empty %}
+        <p>На данный момент активных вакансий нет.</p>
+    {% endfor %}
+</div>
+{% endblock %}

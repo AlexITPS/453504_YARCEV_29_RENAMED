@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="max-width: 500px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+    <h2>Редактирование отзыва</h2>
+    <p>Услуга: <strong>{{ review.service.name }}</strong></p>
+    <hr>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div style="margin-top: 20px;">
+            <button type="submit" style="background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                Сохранить изменения
+            </button>
+            <a href="{% url 'service_detail' review.service.id %}" style="margin-left: 10px; color: #666;">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

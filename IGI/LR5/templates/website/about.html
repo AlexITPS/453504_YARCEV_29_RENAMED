@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>О нашей мастерской</h1>
+<div style="background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-top: 20px;">
+    
+    <!-- Создаем контейнер-сетку, которая на мобильных станет в один столбец -->
+    <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start;">
+        
+        {% if info.image %}
+            <!-- Левая колонка с фото -->
+            <div style="flex: 1; min-width: 280px; max-width: 350px; margin: 0 auto;">
+                <img src="{{ info.image.url }}" alt="Наша мастерская" style="width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            </div>
+        {% endif %}
+
+        <!-- Правая колонка с текстом -->
+        <div style="flex: 2; min-width: 300px;">
+            <h3>История</h3>
+            <p style="white-space: pre-line; line-height: 1.6; color: #333;">{{ info.history }}</p>
+            
+            <hr style="margin: 25px 0; border: none; border-top: 1px solid #eee;">
+            
+            <h3>Миссия и описание</h3>
+            <p style="white-space: pre-line; line-height: 1.6; color: #333;">{{ info.description }}</p>
+        </div>
+    </div>
+    
+    <!-- Реквизиты выносим вниз на всю ширину -->
+    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 40px;">
+        <h4>Реквизиты</h4>
+        <p style="font-family: monospace; white-space: pre-wrap; margin-bottom: 0;">{{ info.requisites }}</p>
+    </div>
+</div>
+{% endblock %}

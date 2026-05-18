@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Часто задаваемые вопросы (FAQ)</h1>
+<div style="margin-top: 20px;">
+    {% for item in faqs %}
+        <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 15px; border-left: 5px solid #007bff;">
+            <h3 style="margin-top: 0;">{{ item.question }}</h3>
+            <p style="color: #333;">{{ item.answer }}</p>
+            <small style="color: #999;">Добавлено: {{ item.created_at|date:"d.m.Y" }}</small>
+        </div>
+    {% empty %}
+        <p>Вопросов пока нет. Задайте свой через поддержку!</p>
+    {% endfor %}
+</div>
+{% endblock %}

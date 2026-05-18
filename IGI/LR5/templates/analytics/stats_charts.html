@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="padding: 20px;">
+    <div style="margin-bottom: 15px;">
+        <a href="{% url 'stats' %}" style="color: #6c757d; text-decoration: none; font-size: 0.95em;">← Назад к показателям</a>
+    </div>
+
+    <h1 style="margin-bottom: 25px;">Визуализация данных</h1>
+
+    {% if chart_pie and chart_bar %}
+        <div style="display: flex; gap: 20px; margin-bottom: 30px; justify-content: space-around; background: white; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <div style="text-align: center;">
+                <img src="data:image/png;base64,{{ chart_pie }}" alt="Диаграмма заказов" style="max-width: 100%; height: auto;">
+            </div>
+            <div style="text-align: center;">
+                <img src="data:image/png;base64,{{ chart_bar }}" alt="Диаграмма выручки" style="max-width: 100%; height: auto;">
+            </div>
+        </div>
+    {% else %}
+        <div style="background: #fff; padding: 25px; text-align: center; border: 1px dashed #ccc; border-radius: 8px; margin-bottom: 30px; color: #666;">
+            📈 <strong>Графики аналитики появятся здесь сразу после завершения и оплаты первых заказов.</strong>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

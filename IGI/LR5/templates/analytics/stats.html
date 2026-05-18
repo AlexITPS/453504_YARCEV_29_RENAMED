@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="padding: 20px;">
+    <h1 style="margin-bottom: 30px;">Аналитика и статистика мастерской</h1>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        
+        <div style="background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <h3>Финансовые показатели</h3>
+            <p>Общая сумма продаж: <strong>{{ total_sales }} руб.</strong></p>
+            <p>Средний чек: <strong>{{ stats_sales.avg }} руб.</strong></p>
+            <p>Медианная цена: <strong>{{ stats_sales.median }} руб.</strong></p>
+            <p>Типичная цена (мода): <strong>{{ stats_sales.mode }} руб.</strong></p>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+            <p>Самая прибыльная категория: <br>
+                <strong>
+                    {% if category_profit %}
+                        {{ category_profit.service__category__name }} 
+                        <span style="color: #28a745;">({{ category_profit.total }} руб.)</span>
+                    {% else %}
+                        Нет данных (нет выполненных заказов)
+                    {% endif %}
+                </strong>
+            </p>
+        </div>
+
+        <div style="background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <h3>Клиенты и популярность</h3>
+            <p>Средний возраст клиента: <strong>{{ stats_ages.avg }} лет</strong></p>
+            <p>Медианный возраст: <strong>{{ stats_ages.median }} лет</strong></p>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+            {% if popular_service %}
+                <p>Самая востребованная услуга: <br><strong>{{ popular_service.name }}</strong></p>
+                <p>Всего заказов этой услуги: <strong>{{ popular_service.num_orders }}</strong></p>
+            {% else %}
+                <p>Услуги еще не заказывались.</p>
+            {% endif %}
+        </div>
+
+        <div style="background: #f0f7ff; padding: 20px; border: 1px solid #cce5ff; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+                <h3 style="color: #004085; margin-top: 0;">Визуализация данных</h3>
+                <p style="color: #004085; font-size: 0.95em; line-height: 1.5;">
+                    Интерактивные диаграммы и графики отчетности. Позволяют наглядно оценить динамику выручки и распределение заказов по основным категориям ремонта.
+                </p>
+            </div>
+            <div style="margin-top: 15px;">
+                <a href="{% url 'stats_charts' %}" style="display: inline-block; background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,123,255,0.3); transition: background 0.2s;">
+                    Смотреть графики →
+                </a>
+            </div>
+        </div>
+
+        <div style="background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; flex-direction: column;">
+            <h3 style="margin-top: 0; margin-bottom: 15px;">Эффективность направлений</h3>
+            
+            <div style="max-height: 220px; overflow-y: auto; padding-bottom: 20px;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9em;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #eee; color: #666;">
+                            <th style="padding: 8px 4px;">Категория</th>
+                            <th style="padding: 8px 4px; text-align: center;">Услуг</th>
+                            <th style="padding: 8px 4px; text-align: center;">Заказов</th>
+                            <th style="padding: 8px 4px; text-align: right;">Выручка</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cat in categories_stats %}
+                            <tr style="border-bottom: 1px solid #f1f1f1;">
+                                <td style="padding: 10px 4px;"><strong>{{ cat.name }}</strong></td>
+                                <td style="padding: 10px 4px; text-align: center; color: #666;">{{ cat.total_services }}</td>
+                                <td style="padding: 10px 4px; text-align: center; color: #666;">{{ cat.total_orders }}</td>
+                                <td style="padding: 10px 4px; text-align: right; color: #28a745; font-weight: bold;">
+                                    {% if cat.earned_money %}{{ cat.earned_money }}{% else %}0{% endif %} руб.
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="4" style="padding: 15px 0; text-align: center; color: #999;">Нет данных по категориям</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мастерская "Ремонт 24/7"</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; line-height: 1.6; }
+        .api-box { background: #f4f4f4; padding: 15px; border-radius: 8px; border-left: 5px solid #007bff; margin-top: 20px; }
+        nav { background: #333; color: white; padding: 10px; display: flex; justify-content: space-between; align-items: center; }
+        nav a { color: white; text-decoration: none; margin: 0 10px; }
+        .container { margin-top: 20px; }
+    </style>
+</head>
+<body>
+<nav style="background: #2c3e50; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); color: white;">
+    
+    <div style="display: flex; gap: 20px; align-items: center;">
+        <a href="{% url 'home' %}" style="color: white; text-decoration: none; font-weight: 500;">Главная</a>
+        <a href="{% url 'service_list' %}" style="color: white; text-decoration: none;">Услуги</a>
+        <a href="{% url 'news_list' %}" style="color: white; text-decoration: none;">Новости</a>
+        <a href="{% url 'about' %}" style="color: white; text-decoration: none;">О компании</a>
+        <a href="{% url 'promo_list' %}" style="color: white; text-decoration: none;">Промокоды</a>
+        <a href="{% url 'vacancies' %}" style="color: white; text-decoration: none;">Вакансии</a>
+        
+        {% if user.is_authenticated and user.is_superuser %}
+            <a href="{% url 'stats' %}" style="color: #f1c40f; text-decoration: none; font-weight: bold; margin-left: 10px;">Статистика</a>
+        {% endif %}
+    </div>
+    
+    <div style="display: flex; align-items: center; gap: 15px;">
+        {% if user.is_authenticated %}
+            <span style="font-size: 0.95em;">Привет, <strong style="color: #3498db;">{{ user.username }}</strong>!</span>
+            <a href="{% url 'profile' %}" style="color: white; text-decoration: none; border-bottom: 1px solid white; padding-bottom: 2px;">Личный кабинет</a>
+            
+            <form action="{% url 'logout' %}" method="post" style="display: inline; margin: 0;">
+                {% csrf_token %}
+                <button type="submit" style="background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.9em; font-weight: bold;">
+                    Выйти
+                </button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}" style="color: white; text-decoration: none;">Войти</a>
+            <span style="color: #7f8c8d;">|</span>
+            <a href="{% url 'register' %}" style="color: white; text-decoration: none;">Регистрация</a>
+        {% endif %}
+    </div>
+</nav>
+
+    {% if messages %}
+        <div style="margin: 20px;">
+            {% for message in messages %}
+                <div style="padding: 15px; border-radius: 5px; margin-bottom: 10px; 
+                    {% if message.tags == 'success' %} background: #d4edda; color: #155724; border: 1px solid #c3e6cb;
+                    {% else %} background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; {% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid #eee; margin-top: 50px;">
+    <footer style="padding: 30px 20px; text-align: center; color: #7f8c8d; font-family: sans-serif; font-size: 0.95em; line-height: 1.8;">
+        
+        <div>UTC: {{ footer_utc_time|date:"d/m/Y H:i" }}</div>
+        <div>Ваше время: {{ footer_local_time|date:"d/m/Y H:i" }} ({{ footer_tz_name }})</div>
+
+        <div style="margin: 10px 0;">
+            <a href="{% url 'privacy' %}" style="text-decoration: none; color: blue;">Политика</a> | 
+            <a href="{% url 'faq' %}" style="text-decoration: none; color: blue;">FAQ</a> | 
+            <a href="{% url 'contacts' %}" style="text-decoration: none; color: blue;">Контакты</a>
+        </div>
+
+        <div style="font-weight: bold; color: #2980b9; margin-top: 10px;">
+            🌡️ Погода в г. Минск: {{ footer_weather.temp }}°C ({{ footer_weather.desc }})
+        </div>
+
+        <div style="color: #7f8c8d; margin-top: 5px;">
+            💵 Курс доллара (НБРБ): <strong>{{ footer_usd }}</strong> BYN
+        </div>
+    </footer>
+</body>
+</html>

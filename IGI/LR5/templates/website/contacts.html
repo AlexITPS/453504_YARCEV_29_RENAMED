@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Наши контакты</h1>
+
+<div style="display: flex; gap: 25px; flex-wrap: wrap; margin-top: 30px;">
+    {% for emp in employees %}
+        <div style="border: 1px solid #eee; border-radius: 12px; width: 300px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; background: #fff;">
+            {% if emp.photo %}
+                <img src="{{ emp.photo.url }}" alt="{{ emp.full_name }}" style="width: 100%; height: 250px; object-fit: cover;">
+            {% endif %}
+            
+            <div style="padding: 20px;">
+                <h3 style="margin-top: 0; color: #2c3e50;">{{ emp.full_name }}</h3>
+                <p style="font-style: italic; color: #7f8c8d; margin-bottom: 15px;">
+                    <strong>Обязанности:</strong><br>
+                    {{ emp.position }}
+                </p>
+                <p><strong>Тел:</strong> {{ emp.phone }}</p>
+                <p><strong>Email:</strong> <a href="mailto:{{ emp.email }}" style="color: blue;">{{ emp.email }}</a></p>
+            </div>
+        </div>
+    {% empty %}
+        <p>Информация о сотрудниках скоро появится.</p>
+    {% endfor %}
+</div>
+{% endblock %}
