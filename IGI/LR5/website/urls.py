@@ -17,4 +17,5 @@ urlpatterns = [
     path('promos/', views.promo_view, name='promo_list'),
     path('review/<int:pk>/edit/', views.edit_review, name='edit_review'),
     path('review/<int:pk>/delete/', views.delete_review, name='delete_review'),
+    path('reviews/', views.all_reviews_view, name='all_reviews'),
 ]

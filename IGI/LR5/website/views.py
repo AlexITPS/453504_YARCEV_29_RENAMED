@@ -179,3 +179,7 @@ def vacancies_view(request):
 def promo_view(request):
     promos = PromoCode.objects.filter(is_archived=False)
     return render(request, 'website/promos.html', {'promos': promos})
+
+def all_reviews_view(request):
+    reviews = Review.objects.all().select_related('user', 'service').order_by('-created_at')
+    return render(request, 'website/reviews_all.html', {'reviews': reviews})

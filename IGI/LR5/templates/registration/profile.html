@@ -86,7 +86,11 @@
             {% for order in orders %}
             <tr>
                 <td>{{ order.id }}</td>
-                <td>{{ order.service.name }}</td>
+                <td>
+                    <a href="{% url 'service_detail' order.service.id %}" style="color: #007bff; text-decoration: none; font-weight: bold;">
+                        {{ order.service.name }}
+                    </a>
+                </td>
                 
                 {% if user.is_superuser or user.is_master %}
                     <td>

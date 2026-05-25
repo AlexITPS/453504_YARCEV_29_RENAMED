@@ -21,7 +21,8 @@
         <a href="{% url 'about' %}" style="color: white; text-decoration: none;">О компании</a>
         <a href="{% url 'promo_list' %}" style="color: white; text-decoration: none;">Промокоды</a>
         <a href="{% url 'vacancies' %}" style="color: white; text-decoration: none;">Вакансии</a>
-        
+        <a href="{% url 'all_reviews' %}" style="color: white; text-decoration: none; text-decoration: none;">Отзывы</a>
+
         {% if user.is_authenticated and user.is_superuser %}
             <a href="{% url 'stats' %}" style="color: #f1c40f; text-decoration: none; font-weight: bold; margin-left: 10px;">Статистика</a>
         {% endif %}

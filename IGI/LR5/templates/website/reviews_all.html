@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="padding: 20px;">
+    <h1>Отзывы наших клиентов</h1>
+    <p style="color: #666; margin-bottom: 30px;">Здесь вы можете прочитать мнения о всех наших услугах.</p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px;">
+        {% for r in reviews %}
+            <div style="background: #fff; border: 1px solid #ddd; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                    <strong>{{ r.user.username }}</strong>
+                    <span style="color: gold; font-size: 1.2em;">{{ r.rating }} ★</span>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <small style="color: #999;">Об услуге:</small><br>
+                    <a href="{% url 'service_detail' r.service.id %}" style="color: #2980b9; text-decoration: none; font-weight: bold;">
+                        {{ r.service.name }}
+                    </a>
+                </div>
+
+                <p style="font-style: italic; color: #333; line-height: 1.5; background: #f8f9fa; padding: 10px; border-radius: 8px;">
+                    "{{ r.text }}"
+                </p>
+
+                <div style="text-align: right; margin-top: 10px;">
+                    <small style="color: #bdc3c7;">{{ r.created_at|date:"d.m.Y H:i" }}</small>
+                </div>
+            </div>
+        {% empty %}
+            <p>Отзывов пока нет. Станьте первым, кто оставит свое мнение!</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
